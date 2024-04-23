@@ -49,17 +49,13 @@ val defaultTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd
 
 @CombinedPreviews
 @Composable
-fun ChatScreenTabletPreview() {
+fun ChatScreenPreview() {
     ChatScreen(navController = rememberNavController())
 }
 
 @Composable
 fun ChatScreen(navController: NavController) {
-    Column(modifier = Modifier.padding(top = 8.dp)) {
-        SearchBox(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
-        RecentContactsList(modifier = Modifier.padding(start = 2.dp))
-        ChatList(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
-    }
+    /* TODO (last) */
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,75 +63,22 @@ fun ChatScreen(navController: NavController) {
 fun SearchBox(
     modifier: Modifier = Modifier
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
-    TextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        value = text,
-        shape = CircleShape,
-        colors = TextFieldDefaults.textFieldColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent
-        ),
-        onValueChange = { text = it },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        singleLine = true,
-        placeholder = {
-            Text(
-                stringResource(R.string.search),
-            )
-        },
-    )
+    /* TODO */
 }
 
 @Composable
-fun RecentContactsList(modifier: Modifier) {
-    LazyRow(
-        modifier = modifier
-            .padding(top = 8.dp, bottom = 8.dp)
-    ) {
-        items(chatListItems(defaultTimeFormatter)) {
-            RecentContactItem(profilePicture = it.profilePicture, name = it.name)
-        }
-    }
-}
-
-@Composable
-fun ChatList(modifier: Modifier) {
-    LazyColumn(modifier = modifier) {
-        // add key when using real data
-        // TODO: time is parsed twice. Look into solutions.
-        items(items = chatListItems(defaultTimeFormatter)) {
-            ChatItem(it.name, it.message, it.time, it.profilePicture)
-        }
-    }
+fun ProfilePic(@DrawableRes profilePicture: Int) {
+    /* TODO */
 }
 
 @Composable
 fun RecentContactItem(@DrawableRes profilePicture: Int, name: String) {
-    Column(
-        modifier = Modifier.width(58.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ProfilePic(profilePicture = profilePicture)
-        Text(
-            modifier = Modifier
-                .padding(top = 4.dp),
-            fontSize = 10.sp,
-            text = name,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            lineHeight = 12.sp
-        )
-    }
+    /* TODO */
+}
+
+@Composable
+fun RecentContactsList(modifier: Modifier) {
+    /* TODO */
 }
 
 @Composable
@@ -145,49 +88,10 @@ fun ChatItem(
     time: LocalDateTime,
     @DrawableRes profilePicture: Int
 ) {
-    Row(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ProfilePic(profilePicture = profilePicture)
-        Column(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .fillMaxWidth()
-        ) {
-            Text(text = name)
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier.weight(2f),
-                    text = message,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
-                Text(text = " • ")
-                Text(
-                    modifier = Modifier.weight(1f),
-                    // TODO: time is parsed twice. Look into solutions.
-                    text = time.format(customTimeFormatter(time)),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
-            }
-        }
-    }
+    /* TODO */
 }
 
 @Composable
-fun ProfilePic(@DrawableRes profilePicture: Int) {
-    Image(
-        modifier = Modifier
-            .size(50.dp)
-            .clip(CircleShape),
-        painter = painterResource(id = profilePicture),
-        contentDescription = stringResource(R.string.profile_picture)
-    )
+fun ChatList(modifier: Modifier) {
+    /* TODO */
 }
