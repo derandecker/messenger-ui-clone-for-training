@@ -2,6 +2,7 @@ package com.derandecker.fbmessengeruiclone.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -35,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -55,30 +58,88 @@ fun ChatScreenPreview() {
 
 @Composable
 fun ChatScreen(navController: NavController) {
-    /* TODO (last) */
+    Column(modifier = Modifier.padding(top = 8.dp)) {
+        SearchBox(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
+        RecentContactsList(modifier = Modifier.padding(start = 2.dp))
+        ChatList(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 fun SearchBox(
     modifier: Modifier = Modifier
 ) {
-    /* TODO */
+    var text by rememberSaveable { mutableStateOf("") }
+    TextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        value = text,
+        shape = CircleShape,
+        colors = TextFieldDefaults.textFieldColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent
+        ),
+        onValueChange = { text = it },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null
+            )
+        },
+        singleLine = true,
+        placeholder = {
+            Text(
+                stringResource(R.string.search),
+            )
+        },
+    )
 }
 
 @Composable
 fun ProfilePic(@DrawableRes profilePicture: Int) {
-    /* TODO */
+    Image(
+        modifier = Modifier
+            .size(50.dp)
+            .clip(CircleShape),
+        painter = painterResource(id = profilePicture),
+        contentDescription = stringResource(R.string.profile_picture)
+    )
 }
 
 @Composable
 fun RecentContactItem(@DrawableRes profilePicture: Int, name: String) {
-    /* TODO */
+    Column(
+        modifier = Modifier.width(58.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        ProfilePic(profilePicture = profilePicture)
+        Text(
+            modifier = Modifier
+                .padding(top = 4.dp),
+            fontSize = 10.sp,
+            text = name,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            lineHeight = 12.sp
+        )
+    }
 }
 
 @Composable
 fun RecentContactsList(modifier: Modifier) {
-    /* TODO */
+    LazyRow(
+        modifier = modifier
+            .padding(top = 8.dp, bottom = 8.dp)
+    ) {
+        items(chatListItems(defaultTimeFormatter)) {
+            RecentContactItem(profilePicture = it.profilePicture, name = it.name)
+        }
+    }
 }
 
 @Composable
@@ -88,10 +149,48 @@ fun ChatItem(
     time: LocalDateTime,
     @DrawableRes profilePicture: Int
 ) {
-    /* TODO */
+    Row(
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ProfilePic(profilePicture = profilePicture)
+        Column(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .fillMaxWidth()
+        ) {
+            Text(text = name)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    modifier = Modifier.weight(2f),
+                    text = message,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+                Text(text = " • ")
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = time.format(customTimeFormatter(time)),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+            }
+        }
+    }
 }
 
 @Composable
 fun ChatList(modifier: Modifier) {
-    /* TODO */
+    LazyColumn(modifier = modifier
+    ) {
+        // add key when using real data
+        items(items = chatListItems(defaultTimeFormatter)) {
+            ChatItem(it.name, it.message, it.time, it.profilePicture)
+        }
+    }
 }
